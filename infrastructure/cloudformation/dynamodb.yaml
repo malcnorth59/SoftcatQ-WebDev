@@ -1,0 +1,102 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'DynamoDB table for UKPC membership'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
+    Description: Deployment environment
+
+Resources:
+  MembersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ukpc-members-${Environment}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: recordType
+          AttributeType: S
+        - AttributeName: fullName
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: telephone
+          AttributeType: S
+        - AttributeName: postcode
+          AttributeType: S
+        - AttributeName: membershipStatus
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: RecordTypeIndex
+          KeySchema:
+            - AttributeName: recordType
+              KeyType: HASH
+            - AttributeName: PK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: NameIndex
+          KeySchema:
+            - AttributeName: recordType
+              KeyType: HASH
+            - AttributeName: fullName
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: EmailIndex
+          KeySchema:
+            - AttributeName: recordType
+              KeyType: HASH
+            - AttributeName: email
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: TelephoneIndex
+          KeySchema:
+            - AttributeName: recordType
+              KeyType: HASH
+            - AttributeName: telephone
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: PostcodeIndex
+          KeySchema:
+            - AttributeName: recordType
+              KeyType: HASH
+            - AttributeName: postcode
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: recordType
+              KeyType: HASH
+            - AttributeName: membershipStatus
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+Outputs:
+  TableName:
+    Description: Name of the DynamoDB table
+    Value: !Ref MembersTable
+    Export:
+      Name: !Sub ${AWS::StackName}-TableName
+  
+  TableArn:
+    Description: ARN of the DynamoDB table
+    Value: !GetAtt MembersTable.Arn
+    Export:
+      Name: !Sub ${AWS::StackName}-TableArn
