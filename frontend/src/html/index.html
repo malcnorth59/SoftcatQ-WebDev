@@ -18,6 +18,17 @@
         <h1>UKPC Membership Application</h1>
         <form id="membershipForm" class="needs-validation" novalidate>
             <div class="mb-3">
+                <label class="form-label d-block">Membership Type</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="membershipType" id="membershipType" value="full" required>
+                    <label class="form-check-label" for="membershipTypeFull">Full Member</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="membershipType" id="membershipTypeAssociate" value="associate" required>
+                    <label class="form-check-label" for="membershipTypeAssociate">Associate Member</label>
+                </div>
+            </div>
+            <div class="mb-3">
                 <label for="fullName" class="form-label">Full Name</label>
                 <input type="text" class="form-control" id="fullName" required>
             </div>
@@ -33,19 +44,14 @@
                 <label for="postcode" class="form-label">Postcode</label>
                 <input type="text" class="form-control" id="postcode" required>
             </div>
-            <div class="mb-3">
-                <label for="membershipType" class="form-label">Membership Type</label>
-                <select class="form-select" id="membershipType" required>
-                    <option value="">Select membership type</option>
-                    <option value="full">Full Member</option>
-                    <option value="associate">Associate Member</option>
-                </select>
-            </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="laaStatus">
                 <label class="form-check-label" for="laaStatus">LAA Member</label>
             </div>
-            <button type="submit" class="btn btn-primary">Submit Application</button>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit Application</button>
+            </div>
         </form>
     </div>
 
